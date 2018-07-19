@@ -1,0 +1,98 @@
+<html>
+<head>
+    <title>Xedzone Web Crawler</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+{% load static %}
+<div class="container" style="display:flex;">
+    <div class="navigation" id="container">
+        <div class="navigation" id="inside">
+            <div class="navigation" id="logo"></div>
+        </div>
+    </div>
+    <div class="main" id="container">
+        <div class="main" id="inside">
+            <h1>WebCrawler v1.0</h1>
+            <form action="{% url 'runCrawl' %}" method="post" onsubmit="return checkSubmit()">
+                {% csrf_token %}
+                <label>link:</label>
+                <p>ex:https://www.gittigidiyor.com/<span style="border: 1px solid brown">oto-yedek-parca-aksesuar/lastik-jant-ekipmanlar</span>?sf=4</p>
+                <input type="text" value="" name="link" class="form" id="link" placeholder="oto-yedek-parca-aksesuar/lastik-jant-ekipmanlar">
+                <label>Limit</label>
+                <input type="text" value="" name="limit" class="form" id="limit" placeholder="Taranmak istenen sayfa sayısı EX: 5">
+                <input type="submit" value="Crawl"/>
+            </form>
+{#        <script>#}
+{#        function checkSubmit(){#}
+{#            for(var i = 0; i<$('.form').length; i++){#}
+{#                if($('.form')[i].val() == ''){#}
+{#                    $('.form')[i].css('background','#dd827b');#}
+{#                    return false#}
+{#                }#}
+{#               }#}
+{#        }#}
+{#        </script>#}
+
+            {% if con %}
+            <p>
+                {{ link }} adresinde {{ limit }} sayfa tarandı.
+            </p>
+            <a href="{% static output %}" download="{{ output }}">Tarama Çıktısı</a>
+
+            {% endif %}
+            </div>
+    </div>
+    <style>
+        body {
+            margin: auto;
+            font-family: Helvetica;
+        }
+
+        .container {
+            width: 100%;
+            margin: auto;
+            height: 100%;
+        }
+
+        .form {
+            width: 100%;
+        }
+
+        #container.navigation {
+            width: 25%;
+            background: #1f281c;
+            color: whitesmoke;
+
+        }
+
+        #inside.navigation {
+            padding: 10px;
+        }
+
+        #inside.main {
+            padding-top: 50px;
+            padding-left: 10px;
+            padding-right: 10px;
+
+        }
+
+        #container.main {
+            width: 100%;
+            background: #f5ebdf;
+
+        {#padding: 10px;#}
+        }
+
+        #logo.navigation {
+            width: 100%;
+            background: url("https://www.xedzone.com/images/logo-black.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            height: 50px;
+        }
+    </style>
+</div>
+</body>
+</html>
