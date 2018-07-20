@@ -5,10 +5,10 @@
 # See documentation in:
 # https://doc.scrapy.org/en/latest/topics/items.html
 
-import spider
+import scrapy
 
 
-class WebcrawlerItem(spider.Item):
+class WebcrawlerItem(scrapy.Item):
     # define the fields for your item here like:
-    # name = spider.Field()
+    # name = scrapy.Field()
     pass

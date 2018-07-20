@@ -21,17 +21,17 @@ def runCrawl(request):
         'limit':request.POST['limit'],
         'output': 0,
     }
-    # call spider ...
+    # call scrapy ...
     tmpdir = os.getcwd()
     # print(tmpdir)
-    os.chdir('spider/')
+    os.chdir('scrapy/')
     # print(os.getcwd())
     out = context['link'].split("/")[-1]
     context['output'] = 'gg_%s.txt' % out
     subprocess.call(['bash','XedzoneCrawler.sh',context['link'],context['limit']])
     subprocess.call(['mv', context['output'] , '%s/static/' % tmpdir])
     os.chdir(tmpdir)
-    # subprocess.check_output(['cd','spider/'])
+    # subprocess.check_output(['cd','scrapy/'])
     # print(subprocess.call(['ls','-l']))
     return HttpResponse(template.render(context, request))
 

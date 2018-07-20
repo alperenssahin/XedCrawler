@@ -44,7 +44,7 @@ DOWNLOAD_DELAY = 1
 #   'Accept-Language': 'en',
 #}
 
-# Enable or disable spider middlewares
+# Enable or disable scrapy middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
 #    'webCrawler.middlewares.WebcrawlerSpiderMiddleware': 543,
@@ -59,7 +59,7 @@ DOWNLOAD_DELAY = 1
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
 #EXTENSIONS = {
-#    'spider.extensions.telnet.TelnetConsole': None,
+#    'scrapy.extensions.telnet.TelnetConsole': None,
 #}
 
 # Configure item pipelines
@@ -87,4 +87,4 @@ AUTOTHROTTLE_START_DELAY = 2
 #HTTPCACHE_EXPIRATION_SECS = 0
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
-#HTTPCACHE_STORAGE = 'spider.extensions.httpcache.FilesystemCacheStorage'
+#HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'

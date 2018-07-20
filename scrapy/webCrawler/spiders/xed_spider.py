@@ -1,13 +1,13 @@
-import spider
+import scrapy
 import codecs
 from ..structure import Adresse
 
-class MySpider(spider.Spider):
+class MySpider(scrapy.Spider):
     name = "xed"
     #you must call xed with any adresse id
     def start_requests(self):
         self.host_url = self.getAdresseObject()
-        yield spider.Request(self.host_url, callback=self.parse)
+        yield scrapy.Request(self.host_url, callback=self.parse)
 
 
 
