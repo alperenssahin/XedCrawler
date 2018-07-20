@@ -4,10 +4,10 @@ from ..structure import Adresse
 
 class MySpider(spider.Spider):
     name = "xed"
-
+    #you must call xed with any adresse id
     def start_requests(self):
-
-       yield spider.Request('https://www.google.com', callback=self.parse)
+        self.host_url = self.getAdresseObject()
+        yield spider.Request(self.host_url, callback=self.parse)
 
 
 
@@ -29,11 +29,11 @@ class MySpider(spider.Spider):
         return obj
 
     def printData(self):
-    # write data that downloaded in a txt
+    # write data that crawled in a txt
         return
 
     def ruleGenerator(self):
-    #generate rulu from  Adresse object
+    #generate rule from Adresse object
         return
 
     def insertChildren(self):
