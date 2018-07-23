@@ -14,7 +14,7 @@ class MySpider(scrapy.Spider):
     def parse(self, response):
         page = self.link.split("/")[-1]
         self.file = codecs.open('gg_%s.txt' % page, 'a', encoding="utf-8")
-        for h4 in response.xpath('//h4[contains(@class,"product-title")]/span/text()').extract():
+        for h4 in response.xpath('//h4[contains(@class,\'product-title\')]/span/text()').extract():
                 str = '%s' % h4
                 self.file.write(str+';\n')
         self.file.close()

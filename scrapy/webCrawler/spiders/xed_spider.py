@@ -32,10 +32,6 @@ class MySpider(scrapy.Spider):
     # write data that crawled in a txt
         return
 
-    def ruleGenerator(self):
-    #generate rule from Adresse object
-        return
-
     def insertChildren(self):
     #insert childrens adresse in Adresse object.
         return
