@@ -1,6 +1,6 @@
 import scrapy
 import codecs
-from ..structure import Adresse
+# from ..structure import Adresse
 
 class MySpider(scrapy.Spider):
     name = "xed"
@@ -25,8 +25,8 @@ class MySpider(scrapy.Spider):
     def getAdresseObject(self):
     # database connection... self.adresse_id
     # create object with self.adresse_id ...
-        obj = Adresse('http://example.com')
-        return obj
+    #     obj = Adresse('http://example.com')
+        return
 
     def printData(self):
     # write data that crawled in a txt
