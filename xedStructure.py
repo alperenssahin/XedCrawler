@@ -63,35 +63,62 @@ class Crawl:
 
     def __init__(self, type):
         if type == 'd':
-            #...
+            # ...
             self.database = True
             self.writer = False
-            #log:saving system : database
+            # log:saving system : database
         elif type == 'w':
-            #...
+            # ...
             self.writer = True
             self.database = False
-            #log:saving system : write to file
+            # log:saving system : write to file
         else:
-            #...
+            # ...
             self.writer = True
             self.database = True
-            #log:saving system : database - write to file
+            # log:saving system : database - write to file
 
-
-    def getHttpResponse_file(self,URL):
-        #call bash script
-        #crated tmp file into scrapy/tmpResponse.html
-        #you must use this html file before call again getHttpResponse_file()
+    def getHttpResponse_file(self, URL):
+        # call bash script
+        # created tmp file into scrapy/tmpResponse.html
+        # you must use this html file before call again getHttpResponse_file()
 
         tmp_dir = os.getcwd()
         os.chdir('scrapy/')
         print(subprocess.call(['ls']))
-        #call bash
-        subprocess.call(['bash','HttpResponse.sh',URL])
+        # call bash
+        subprocess.call(['bash', 'HttpResponse.sh', URL])
         os.chdir(tmp_dir)
         return
+
 
 # obj = Crawl('d')
 # obj.getHttpResponse_file('https://www.gittigidiyor.com')
 
+# ReferenceAttr class is constructor for understand different attributes who have relation with reference attribute
+# This class may create temporal data on mongodb to create a connection succeed with django-extension-scrapy
+
+class ReferenceAttr(ObjectId, MongoClient):
+
+    def __init__(self, type, path='', objectID=''):
+        if type == 'db':
+            # call generator from db
+            self.generatorDB(objectID);
+        if type == 'csv':
+            # call generator from csv
+            self.generatorCSV(path);
+
+    def generatorDB(self, ID):
+        #read ref data from database, create a reference dictionary.
+        return
+
+    def generatorCSV(self, path):
+        #read ref data from csv file and create a dictionary and if you want, you may insert this dic to mongo db
+        return
+
+    def insertDB(self,obj):
+        #insert obj to db
+        return
+    def destroy(self):
+        #destroy all data on db
+        return
