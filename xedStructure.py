@@ -103,22 +103,90 @@ class ReferenceAttr(ObjectId, MongoClient):
     def __init__(self, type, path='', objectID=''):
         if type == 'db':
             # call generator from db
-            self.generatorDB(objectID);
+            self.reference = self.generatorDB(objectID)
         if type == 'csv':
             # call generator from csv
-            self.generatorCSV(path);
+            self.reference = self.generatorCSV(path)
 
     def generatorDB(self, ID):
-        #read ref data from database, create a reference dictionary.
-        return
+        # read ref data from database, create a reference dictionary.
+        client = MongoClient()
+        db = client.reference
+        collection = db.permenant
+        self.reference = collection.find_one({'_id': ObjectId(ID)})
+        self.post_id = ID
+
 
     def generatorCSV(self, path):
-        #read ref data from csv file and create a dictionary and if you want, you may insert this dic to mongo db
-        return
+        # -*- coding: utf-8 -*-
+        # read ref data from csv file and create a dictionary and if you want, you may insert this dic to mongo db
+        import codecs
+        a = 0
 
-    def insertDB(self,obj):
-        #insert obj to db
-        return
+        def createObject(lines, startline):
+            global a
+            a = startline
+            obj = {}
+            position = 1
+            tmp = []
+            while 1:
+                if a >= len(lines):
+                    break
+                line = lines[a].split(';')
+                for l in line:
+                    if l == '' or l == '-':
+                        continue
+                    else:
+                        t = line.index(l)
+                        n = line[t + 1]
+                        if n == '' or n == '-':
+                            if position == t:
+                                tmp.append(l)
+                                break
+                            else:
+                                obj[l] = createObject(lines, a + 1)
+                                break
+                        else:
+                            if l == 'value':
+                                obj[l] =[]
+                                obj[l].append(n)
+                                tmp = obj[l]
+                                break
+                            else:
+                                obj[l] = n
+                                position = t+1
+                                break
+                a += 1
+            return obj
+
+        filename = path
+
+        with open(filename, 'r', encoding="utf8", errors='ignore') as f:
+            reader = f.read()
+            lines = reader.split('\n')
+            reff = createObject(lines, 0)
+            # print(reff)
+        return reff
+
+
+    def insertDB(self):
+        # insert obj to db
+        client = MongoClient()
+        db = client.reference
+        collection = db.tmp
+        self.post_id = collection.insert_one(self.reference).inserted_id
+
+
+
     def destroy(self):
-        #destroy all data on db
-        return
+        # destroy all data on db
+        client = MongoClient()
+        db = client.reference
+        collection = db.permenant
+        result = collection.delete_one({'_id': ObjectId(self.post_id)})
+        return result
+
+a = ReferenceAttr('csv', 'taslak_referans.csv')
+print(a.reference)
+id = a.insertDB()
+print(id)
