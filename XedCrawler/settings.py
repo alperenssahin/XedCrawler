@@ -128,3 +128,4 @@ STATICFILES_DIRS = [
 ]
 
 ALLOWED_HOSTS = ['*']
+

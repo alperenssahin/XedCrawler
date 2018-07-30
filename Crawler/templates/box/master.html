@@ -1,10 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Master</title>
 </head>
 <body>
-{{ data }}
+{#<input type="hidden" value='{{ data }}' id="crawl-data">#}
+<div id="container" style="max-width: 500px; max-height: 500px;"></div>
+<script>
+$('#container').load('https://www.google.com');
+</script>
 </body>
+
 </html>

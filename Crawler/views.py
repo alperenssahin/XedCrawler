@@ -1,6 +1,7 @@
-from django.shortcuts import render
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
+
 import subprocess
 import os
 # Create your views here.
@@ -35,14 +36,13 @@ def runCrawl(request):
     # print(subprocess.call(['ls','-l']))
     return HttpResponse(template.render(context, request))
 
+
 def master(request):
-    template = loader.get_template('box/master.html')
+    template = loader.get_template('box/tmpResponse.html')
     # ctx = subprocess.check_output(.split(" "))
-    f = open('scrapy/tmpResponse.html','r')
+
 
     context = {
-        'data':f.read()
     }
 
-    f.close()
     return HttpResponse(template.render(context, request))
