@@ -2,6 +2,9 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
+from pymongo import MongoClient
+from bson.objectid import ObjectId
+
 import subprocess
 import os
 # Create your views here.
@@ -46,3 +49,16 @@ def master(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+from bson.json_util import dumps
+@csrf_exempt
+def xedExtension(request):
+    #Setup
+    client = MongoClient()
+    db = client.reference
+    col = db.tmp
+    items = col.find({},{"category.title":1})
+    items = dumps(items)
+    return  JsonResponse(items,safe=False)

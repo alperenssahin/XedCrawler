@@ -123,7 +123,8 @@ class ReferenceAttr(ObjectId, MongoClient):
         import codecs
         a = 0
 
-        def createObject(lines, startline):
+        import uuid
+        def createObject(lines, startline,indx):
             global a
             a = startline
             obj = {}
@@ -144,12 +145,17 @@ class ReferenceAttr(ObjectId, MongoClient):
                                 tmp.append(l)
                                 break
                             else:
-                                obj[l] = createObject(lines, a + 1)
-                                break
+                                if(line.index(l) == indx):
+                                    a -= 1
+                                    return obj
+                                else:
+                                    obj[l] = createObject(lines, a + 1,line.index(l))
+                                    break
                         else:
                             if l == 'value':
                                 obj[l] =[]
                                 obj[l].append(n)
+                                obj['uID'] = uuid.uuid4()
                                 tmp = obj[l]
                                 break
                             else:
@@ -164,7 +170,7 @@ class ReferenceAttr(ObjectId, MongoClient):
         with open(filename, 'r', encoding="utf8", errors='ignore') as f:
             reader = f.read()
             lines = reader.split('\n')
-            reff = createObject(lines, 0)
+            reff = createObject(lines, 0,99)
             # print(reff)
         return reff
 
@@ -188,5 +194,3 @@ class ReferenceAttr(ObjectId, MongoClient):
 
 a = ReferenceAttr('csv', 'taslak_referans.csv')
 print(a.reference)
-id = a.insertDB()
-print(id)

@@ -129,3 +129,12 @@ STATICFILES_DIRS = [
 
 ALLOWED_HOSTS = ['*']
 
+# CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+
+import socket
+if socket.gethostname()=="Raouf-PC":
+    from local_settings import *
