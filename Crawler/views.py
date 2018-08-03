@@ -26,7 +26,9 @@ def runCrawl(request):
         'output': 0,
     }
     # call scrapy ...
+
     tmpdir = os.getcwd()
+    print(tmpdir)
     # print(tmpdir)
     os.chdir('scrapy/')
     # print(os.getcwd())
@@ -53,6 +55,7 @@ def master(request):
 
 from django.http import JsonResponse
 from bson.json_util import dumps
+import json
 @csrf_exempt
 def xedExtension(request):
     #Setup
@@ -75,10 +78,10 @@ def getRef(request):
 @csrf_exempt
 def getRules(request):
     #ruleGenerator to mongodb
-    # client = MongoClient()
-    # db = client.reference
-    # col = db.tmp
-
-    print(request.POST['data'])
-
+    client = MongoClient()
+    db = client.rules
+    col = db.tmp
+    data = json.loads(request.POST['data'])
+    data_id = col.insert_one(data).inserted_id
+    return HttpResponse(data_id)
 

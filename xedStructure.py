@@ -5,57 +5,6 @@ import os
 import subprocess
 
 
-# class Adresse(ObjectId, MongoClient):
-#
-#     def __init__(self, adresseID):
-#         self.adresseID = adresseID
-#         self.item = self.findAdresseByID(adresseID)
-#         self.rules = self.item['rules']
-#
-#     def ruleGenerator(self):
-#         # generate rules for scrapy crawler
-#         rules = []
-#         for rule in self.rules:
-#             str = ''
-#             if rule['target']:
-#                 str += '//%s' % rule['target']
-#                 # print(str)
-#             else:
-#                 return 0
-#
-#             if rule['attribute']:
-#                 att = list(rule['attribute'])
-#                 str += '[contains(@%s,"%s")]/' % (att[0], rule['attribute'][att[0]])
-#             else:
-#                 str += '/'
-#                 # print(str)
-#             for x in rule['children']:
-#                 str += '%s/' % x
-#                 # print(str)
-#             if rule['get'] == 'text':
-#                 str += 'text()'
-#                 # print(str)
-#             else:
-#                 str += '@%s' % rule['get']
-#                 # print(str)
-#             rules.append(str)
-#         return rules
-#
-#     def findAdresseByID(self, ID):
-#         collection = self.getCollection()
-#         item = collection.find_one({'_id': ObjectId(ID)})
-#         return item
-#
-#     def getCollection(self):
-#         client = MongoClient()
-#         db = client.xed
-#         collection = db.adresse
-#         return collection
-#
-#     def print(self):
-#         print(self.item)
-
-
 class Crawl:
     # 'd' ----> insert to database
     # 'w' ----> crete txt file
@@ -192,6 +141,6 @@ class ReferenceAttr(ObjectId, MongoClient):
         result = collection.delete_one({'_id': ObjectId(self.post_id)})
         return result
 
-a = ReferenceAttr('csv', 'taslak_referans.csv')
-print(a.reference)
-a.insertDB()
+rule = Rules('5b6431882c8884066bdee894')
+print(rule.ruleGenerator())
+print(rule.url)
