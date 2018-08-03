@@ -4,7 +4,7 @@ from django.template import loader
 
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-
+from django.views.decorators.csrf import csrf_exempt
 import subprocess
 import os
 # Create your views here.
@@ -15,7 +15,7 @@ def index(request):
         'question':list,
     }
     return HttpResponse(template.render(context, request))
-
+@csrf_exempt
 def runCrawl(request):
     template = loader.get_template('box/index.html')
     # ctx = subprocess.check_output(.split(" "))
@@ -50,7 +50,7 @@ def master(request):
 
     return HttpResponse(template.render(context, request))
 
-from django.views.decorators.csrf import csrf_exempt
+
 from django.http import JsonResponse
 from bson.json_util import dumps
 @csrf_exempt
@@ -62,3 +62,23 @@ def xedExtension(request):
     items = col.find({},{"category.title":1})
     items = dumps(items)
     return  JsonResponse(items,safe=False)
+@csrf_exempt
+def getRef(request):
+    #list attributes
+    client = MongoClient()
+    db = client.reference
+    col = db.tmp
+    items = col.find_one({'_id':ObjectId(request.POST['ID'])})
+    items = dumps(items)
+    return  JsonResponse(items,safe=False)
+
+@csrf_exempt
+def getRules(request):
+    #ruleGenerator to mongodb
+    # client = MongoClient()
+    # db = client.reference
+    # col = db.tmp
+
+    print(request.POST['data'])
+
+

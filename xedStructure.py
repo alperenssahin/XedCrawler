@@ -194,3 +194,4 @@ class ReferenceAttr(ObjectId, MongoClient):
 
 a = ReferenceAttr('csv', 'taslak_referans.csv')
 print(a.reference)
+a.insertDB()
