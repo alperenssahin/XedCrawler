@@ -5,6 +5,64 @@ import os
 import subprocess
 
 
+class Rules(ObjectId, MongoClient):
+
+    def __init__(self, ruleID):
+        self.FindRules(ruleID)
+        self.url = self.rule['url']
+
+    def ruleGenerator(self):
+        # generate rules for scrapy crawler
+        genRules = []
+        rules = self.rule['rules']
+        for rule in rules:
+            rul = rules[rule]
+            outRule = {'target':rul['target'],'ids':rul['attribute'],'rules':[]}
+            str = '/'
+            for x in rul['children'][::-1]:
+                str += '/%s' % x
+                # print(str)
+            for get in rul['get']:
+                tmp = str
+                if get == 'text':
+
+                    textRule = 'string(%s[1])' % tmp
+                    outRule['rules'].append(textRule)
+                    print(tmp)
+                else:
+                    tmp += '/@%s' % get
+                    outRule['rules'].append(tmp)
+                    print(tmp)
+            genRules.append(outRule)
+        return genRules
+
+    def FindRules(self,ruleID):
+        client = MongoClient()
+        col = client.rules.tmp
+        self.rule = col.find_one({'_id': ObjectId(ruleID)})
+# str = ''
+#             if rule['target']:
+#                 str += '//%s' % rule['target']
+#                 # print(str)
+#             else:
+#                 return 0
+#
+#             if rule['attribute']:
+#                 att = list(rule['attribute'])
+#                 str += '[contains(@%s,"%s")]/' % (att[0], rule['attribute'][att[0]])
+#             else:
+#                 str += '/'
+#                 # print(str)
+#             for x in rule['children'].reverse():
+#                 str += '%s/' % x
+#                 # print(str)
+#             if rule['get'] == 'text':
+#                 str += 'text()'
+#                 # print(str)
+#             else:
+#                 str += '@%s' % rule['get']
+#                 # print(str)
+
 class Crawl:
     # 'd' ----> insert to database
     # 'w' ----> crete txt file
@@ -29,11 +87,11 @@ class Crawl:
 
     def getHttpResponse_file(self, URL):
         # call bash script
-        # created tmp file into scrapy/tmpResponse.html
+        # created tmp file into scrapi/tmpResponse.html
         # you must use this html file before call again getHttpResponse_file()
 
         tmp_dir = os.getcwd()
-        os.chdir('scrapy/')
+        os.chdir('scrapi/')
         print(subprocess.call(['ls']))
         # call bash
         subprocess.call(['bash', 'HttpResponse.sh', URL])
@@ -45,7 +103,7 @@ class Crawl:
 # obj.getHttpResponse_file('https://www.gittigidiyor.com')
 
 # ReferenceAttr class is constructor for understand different attributes who have relation with reference attribute
-# This class may create temporal data on mongodb to create a connection succeed with django-extension-scrapy
+# This class may create temporal data on mongodb to create a connection succeed with django-extension-scrapi
 
 class ReferenceAttr(ObjectId, MongoClient):
 
