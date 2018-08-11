@@ -8,11 +8,14 @@
 
 
 ##scrapy
+
 ###***don't use scrapy for dynamicWebpages***
+
 *   **scrapy selector type example**
    
    
     //h4[contains(@class,"product-title")]/span/text()     
+
 
 ##Selenium
 read this installation 
