@@ -3,19 +3,17 @@ from pymongo import MongoClient
 from bson.objectid import ObjectId
 
 
+# xedCrawler is a base class who works with selenium integration
 class XedCrawler(webdriver.Firefox, MongoClient, ObjectId):
-    # xedCrawler is a base class who works with selenium integration
     def __init__(self, ID):
         self.rulesGenerator(ID)  # call rule from mongoDB
         self.driver = webdriver.Firefox()  # driver for selenium ---> we can change firefox read more about selenium at readme and webSite
         self.url = self.ruleSet['url']  # declaration url
+        self.crawledElements = [] #save crawled items in this variable
 
-    # request is initialisation of seleniyum, you are connecting to a webrowser and crawl html content,
-    # you may call callback function for all request
-
+    #you are making a request on selenium web browser and crawl html response
     def simpleRequest(self):
         self.driver.get(self.url)
-        self.crawledElements = []
         for par in self.rules:
             scraps = self.driver.find_elements_by_xpath(par['rule'])
             for scrap in scraps:
@@ -27,12 +25,11 @@ class XedCrawler(webdriver.Firefox, MongoClient, ObjectId):
                         scr = {'type': type, 'data': scrap.get_attribute(type), 'reference': {}}
                         self.crawledElements.append(scr)
 
-    # rulesGenerator create rule for adaptation to parser function
-
+    # rulesGenerator create the rules by eliminating rule object that come from chrome-extension
     def rulesGenerator(self, ID):
         import itertools
         client = MongoClient()  # DBconnection
-        self.ruleSet = client.rules.tmp.find_one({'_id': ObjectId(ID)})  # DBquery
+        self.ruleSet = client.rules.tmp.find_one({'_id': ObjectId(ID)})  # DBquery --> to get ruleObject from db
         # todo: check rules is recursive
         # todo: create follow rules and condition
         # print(self.ruleSet)
@@ -85,19 +82,13 @@ class XedCrawler(webdriver.Firefox, MongoClient, ObjectId):
             ruleObj = {'rule':str,'get':rul['get'],'reference':{},'crawltype':[]}
             self.rules.append(ruleObj)
 
-    def simpleParser(self):
-        self.crawledElements = []
-        for par in self.rules:
-            scraps = self.driver.find_elements_by_xpath(par['rule'])
-            for scrap in scraps:
-                for type in par['get']: #todo:reference settings
-                    if type == 'text':
-                        scr = {'type':'text','data':scrap.text,'reference':{}}
-                        self.crawledElements.append(scr)
-                    else:
-                        scr = {'type': type, 'data': scrap.get_attribute(type), 'reference': {}}
-                        self.crawledElements.append(scr)
 
+
+    #insert the data that crawled by selenium to MongoDb
+    def crawledToDatabase(self):
+        #...
+
+        return
 
     # you must use quit for close temporal browser
     def quit(self):
